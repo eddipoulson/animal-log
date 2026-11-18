@@ -22,5 +22,5 @@ export const GET = async ({ locals, url, cookies }) => {
 		return redirect(303, '/login?fail=true');
 	}
 
-	throw redirect(303, '/animals');
+	throw redirect(303, '/');
 };

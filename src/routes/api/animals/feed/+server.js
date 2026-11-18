@@ -17,7 +17,7 @@ export async function GET({ url, locals }) {
 		fed: now
 	};
 
-	const feedRecord = await pb.collection('feedings').create(data);
+	await pb.collection('feedings').create(data);
 
 	return new Response(null, { status: 204 });
 }

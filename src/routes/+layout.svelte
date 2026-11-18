@@ -10,12 +10,9 @@
 	let { children } = $props();
 </script>
 
-<!--
-<Navbar />
--->
-<div class="flex flex-col min-h-screen text-black">
-	<main class="p-4">
+<div class="app-shell flex min-h-dvh flex-col text-stone-900">
+	<Navbar />
+	<main class="mx-auto w-full max-w-6xl flex-1 px-4 pb-28 pt-5 sm:px-6 sm:pb-12 sm:pt-8">
 		{@render children?.()}
 	</main>
-	<Navbar />
 </div>

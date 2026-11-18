@@ -1,8 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 
-export async function load({ cookies }) {
-	if (!cookies.get('pb_auth')) {
-		// not sure why locals seems to cause a race condition thing
-		redirect(303, '/login');
+export async function load({ locals }) {
+	if (!locals.pb.authStore.isValid) {
+		throw redirect(303, '/login');
 	}
 }

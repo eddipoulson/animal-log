@@ -2,6 +2,7 @@
 	import { Html5Qrcode } from 'html5-qrcode';
 	import { onDestroy, onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 
 	let html5QRcode;
 	let isScanning = false;
@@ -40,7 +41,7 @@
 		}
 	});
 
-	async function onScanSuccess(decodedText, decodedResult) {
+	async function onScanSuccess(decodedText) {
 		if (isScanning) return;
 		isScanning = true;
 
@@ -49,7 +50,7 @@
 				await html5QRcode.stop();
 			}
 			await html5QRcode.clear();
-			goto(decodedText);
+			goto(resolve(decodedText));
 		} catch (err) {
 			console.error('Error during navigation:', err);
 			isScanning = false;

@@ -1,68 +1,60 @@
 <script>
 	import DateSelector from '$lib/Animals/DateSelector.svelte';
 	import { enhance } from '$app/forms';
-	import { onMount } from 'svelte';
-	import { pb } from '$lib/pocketbase';
-	import { page } from '$app/stores';
 
-	let animal = $state('');
-	let description = $state('');
-	let feedDays = $state([]);
-
-	onMount(async () => {
-		const response = await pb.collection('animals').getOne(`${$page.params.animal}`);
-
-		animal = response.name;
-		description = response.description;
-		feedDays = response.dates;
-	});
+	let { data, form } = $props();
 
 	let formLoading = $state(false);
 </script>
 
 <svelte:head>
-	<title>Add a New Animal</title>
+	<title>Edit {data.animal.name}</title>
 </svelte:head>
 
-<div class="flex justify-center items-center">
-	<section
-		class="flex flex-col rounded-xl shadow p-2 border border-black bg-white w-full lg:w-96 mt-4"
-	>
-		<h3 class="font-semibold text-2xl text-center">Edit your animal</h3>
-		<hr class="border border-black my-2" />
+<div class="mx-auto max-w-xl">
+	<header class="mb-5">
+		<p class="text-sm font-bold text-emerald-700">Animal settings</p>
+		<h1 class="mt-1 font-lora text-3xl font-semibold">Edit {data.animal.name}</h1>
+	</header>
+	<section class="surface p-5 sm:p-6">
 		<form
 			method="post"
 			action="?/edit"
-			class="flex flex-col gap-1 justify-center"
+			class="flex flex-col gap-5"
 			use:enhance={() => {
 				formLoading = true;
+				return ({ update }) => update().finally(() => (formLoading = false));
 			}}
 		>
-			<label for="name" class="font-semibold">Animal Name*</label>
-			<input
-				name="name"
-				value={animal}
-				type="text"
-				placeholder="Animal's name here"
-				class="rounded-md shadow border border-black p-1 bg-gray-300 cursor-not-allowed"
-				disabled
-			/>
-			<label for="description" class="font-semibold">Animal type*</label>
-			<input
-				name="description"
-				value={description}
-				type="text"
-				placeholder="Type of animal here"
-				class="rounded-md shadow border border-black p-1 {formLoading ? 'bg-gray-300' : 'bg-white'}"
-				required
-				disabled={formLoading}
-			/>
-			<label for="" class="font-semibold">Feed Days*</label>
-			<DateSelector loading={formLoading} selectedDays={feedDays} />
-			<button
-				class="border-2 border-black font-semibold rounded-lg w-26 mx-auto p-1 bg-white box-shadow transition-all duration-200 hover:no-shadow hover:translate-x-1 hover:scale-95"
-				disabled={formLoading}>Update {animal}</button
-			>
+			<div>
+				<label for="description" class="mb-1.5 block text-sm font-bold text-stone-700">Species or type</label>
+				<input id="description" name="description" value={data.animal.description} type="text" placeholder="Type of animal" class="field" required disabled={formLoading} />
+			</div>
+			<div class="grid gap-4 sm:grid-cols-2">
+				<div>
+					<label for="quantity" class="mb-1.5 block text-sm font-bold text-stone-700">How many?</label>
+					<input id="quantity" name="quantity" type="number" min="1" max="10000" value={data.animal.quantity} class="field" required disabled={formLoading} />
+				</div>
+				<div>
+					<label for="habitat" class="mb-1.5 block text-sm font-bold text-stone-700">Tank or habitat</label>
+					<select id="habitat" name="habitat" class="field" value={data.animal.habitat} disabled={formLoading}>
+						<option value="">No tank assigned</option>
+						{#each data.habitats as habitat (habitat.id)}
+							<option value={habitat.id}>{habitat.name}</option>
+						{/each}
+					</select>
+				</div>
+			</div>
+			<div>
+				<p class="mb-1.5 text-sm font-bold text-stone-700">Feed days</p>
+				<DateSelector loading={formLoading} selectedDays={data.animal.dates} />
+			</div>
+			<button type="submit" class="primary-button w-full" disabled={formLoading}>
+				{formLoading ? 'Saving...' : `Update ${data.animal.name}`}
+			</button>
+			{#if form?.error}
+				<p class="text-sm text-red-700" role="alert">{form.error}</p>
+			{/if}
 		</form>
 	</section>
 </div>

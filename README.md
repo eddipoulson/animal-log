@@ -1,13 +1,14 @@
-# Keeping track of your animals made easier
+# CritterCare
 
-A little something something that I occasionally remember about and work on. The idea here was to help my fiancée remember what she fed her animals and when she fed them, since she (and I) have so many of them. Right now, it does functionally work in that a user can add an animal with a schedule, add a feed, and see when that animal was last fed. I'm working on adding repeatable tasks such as cleaning a tank or administering medicine and want to add some form of scannable physical thing that we're able to add to each tank. Ideally, I would've loved to have little NFC stickers that I totally originally though of using for animal feeding and made it very, very easy, but this is a PWA and Apple hates PWAs I guess, so I'm working on letting users scan QR codes because those are generally easier to get people to scan.
+CritterCare helps animal owners keep feeding schedules, logs, tanks, and care tasks in one place. Users can add animal groups, track feedings, and see when each group was last fed. Tanks can contain multiple animal groups, with a quantity for each group. Owners can also create seven-day vacation-care links for selected groups; helpers can log feedings and complete eligible tasks without an account.
+
+The tasks page now supports one-time care reminders with an optional animal, due date, and notes. Tasks can be filtered, completed, reopened, and deleted. Recurring schedules are still planned.
+
+Feeding and completion timestamps are stored as UTC instants and shown in the viewer's local time. Task due dates are calendar dates and won't shift across time zones.
 
 ## Features to come
 
-- Sharing logs, people can see your regime or even allow for "guests" to log feeds while you're away from home.
-- Repeatable tasks
+- Repeatable task schedules
 - NFC scanning despite Apple making me very sad
-- A real name, because "Animal Log" is not very catchy
-- Grouping of animals for tanks that may have many of the same type of animal (i.e. frogs, fish)
 - Real progress
 - Not really a feature, but bug fixes :)

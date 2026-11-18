@@ -4,7 +4,7 @@ import { pb } from '$lib/pocketbase.js';
 
 export const load = async ({ locals, url }) => {
 	if (locals.pb.authStore.model) {
-		return redirect(303, '/animals');
+		return redirect(303, '/');
 	}
 
 	const authMethods = await pb.collection('users').listAuthMethods();
@@ -20,15 +20,12 @@ export const actions = {
 
 		try {
 			await locals.pb.collection('users').authWithPassword(data.email, data.password);
-		} catch (err) {
-			console.log(`error ${err}`);
-			return {
-				error: true,
-				email: data.email
-			};
+		} catch {
+			console.warn('Password authentication failed');
+			throw redirect(303, '/login?fail=true');
 		}
 
-		throw redirect(303, '/animals');
+		throw redirect(303, '/');
 	},
 	google: async ({ locals, cookies }) => {
 		const provider = (await locals.pb.collection('users').listAuthMethods()).oauth2.providers.find(
@@ -43,6 +40,6 @@ export const actions = {
 	},
 	logout: async ({ locals }) => {
 		await locals.pb.authStore.clear();
-		throw redirect(303, '/animals');
+		throw redirect(303, '/login');
 	}
 };

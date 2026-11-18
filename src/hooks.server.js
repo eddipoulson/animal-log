@@ -7,7 +7,7 @@ export const handle = async ({ event, resolve }) => {
 
 	try {
 		event.locals.pb.authStore.isValid && (await event.locals.pb.collection('users').authRefresh());
-	} catch (_) {
+	} catch {
 		event.locals.pb.authStore.clear();
 	}
 

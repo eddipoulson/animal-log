@@ -1,6 +1,7 @@
 {
-	"name": "Animal Log",
-	"description": "a log for them animals",
+	"name": "CritterCare",
+	"short_name": "CritterCare",
+	"description": "Animal care schedules, feeding logs, and reminders",
 	"display": "standalone",
 	"start_url": "/",
 	"icons": [
